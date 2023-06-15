@@ -5,12 +5,46 @@ var boughtPizzas = Array.from(h4Elements).map(function(h4Element) {
 });
 document.querySelector('.shoppingСart').innerHTML = boughtPizzas.length
 
-//купити малу піцу
+function addEventListener(){
+var removeButton = document.querySelectorAll('.canRemove');
+removeButton.forEach(function(removeButton) {
+    removeButton.removeEventListener('click', decreaseAmount);
+    removeButton.addEventListener('click', decreaseAmount);
+});
+
 var buySmallButton = document.querySelectorAll('.buyS');
 buySmallButton.forEach(function(buySmallButton) {
+    buySmallButton.removeEventListener('click', buySmallPizza);
     buySmallButton.addEventListener('click', buySmallPizza);
 });
 
+var buyBigButton = document.querySelectorAll('.buyB');
+buyBigButton.forEach(function(buyBigButton) {
+    buyBigButton.removeEventListener('click', buyBigPizza);
+    buyBigButton.addEventListener('click', buyBigPizza);
+});
+
+var addButton = document.querySelectorAll('.addGoods');
+addButton.forEach(function(addButton) {
+    addButton.removeEventListener('click', increaseAmount);
+    addButton.addEventListener('click', increaseAmount);
+});
+
+var clearOrder = document.querySelectorAll('.clearOrder');
+clearOrder.forEach(function(clearOrder) {
+    clearOrder.removeEventListener('click', clearTheOrder);
+    clearOrder.addEventListener('click', clearTheOrder);
+});
+
+var deletePizza = document.querySelectorAll('.cross');
+deletePizza.forEach(function(deletePizza) {
+    deletePizza.removeEventListener('click', removePizza);
+    deletePizza.addEventListener('click', removePizza);
+});
+
+}
+
+//купити малу піцу
 function buySmallPizza(){
     var pizzaCard = this.closest('.pizza-card');
     var name = pizzaCard.querySelector('.caption h3').textContent;
@@ -70,14 +104,11 @@ function buySmallPizza(){
           }
         }
     }
+
+    addEventListener();
 }
 
 //купити велику піцу
-var buyBigButton = document.querySelectorAll('.buyB');
-buyBigButton.forEach(function(buyBigButton) {
-    buyBigButton.addEventListener('click', buyBigPizza);
-});
-
 function buyBigPizza(){
     var pizzaCard = this.closest('.pizza-card');
     var name = pizzaCard.querySelector('.caption h3').textContent;
@@ -137,15 +168,11 @@ function buyBigPizza(){
           }
         }
     }
+    addEventListener();
 }
 
 
 //очищення кошика
-var clearOrder = document.querySelectorAll('.clearOrder');
-clearOrder.forEach(function(clearOrder) {
-    clearOrder.addEventListener('click', clearTheOrder);
-});
-
 function clearTheOrder(){
     var list = document.querySelector('.list');
     boughtPizzas.splice(0, boughtPizzas.length);
@@ -158,3 +185,67 @@ function clearTheOrder(){
     <a href="#" class="orderButton"><h3>Замовити</h3></a>`;
 }
 
+// збільшення кількості піци
+function increaseAmount(){
+    var line = this.closest('.line');
+    var goods = line.querySelector('.goods');
+    var amount = parseInt(goods.textContent);
+
+    var price = line.querySelector('.price');
+    var factPrice = parseInt(price.textContent)/amount;
+
+    var conclusion = document.querySelector('.totalPrice');
+    var pay = parseInt(conclusion.textContent)
+
+    price.innerHTML = parseInt(price.textContent) + factPrice + "грн"
+    conclusion.innerHTML = (pay + factPrice) + " грн"
+    amount++
+    goods.innerHTML = amount;
+}
+
+//зменшення кількості піци
+function decreaseAmount(){
+    var list = document.querySelector('.list');
+    var line = this.closest('.line');
+    var name = line.querySelector('h4').textContent;
+    var goods = line.querySelector('.goods');
+    var amount = parseInt(goods.textContent);
+
+    var price = line.querySelector('.price');
+    var factPrice = parseInt(price.textContent)/amount;
+
+    var conclusion = document.querySelector('.totalPrice');
+    var pay = parseInt(conclusion.textContent)
+
+    conclusion.innerHTML = (pay - factPrice) + " грн"
+    if(amount>1){
+        price.innerHTML = parseInt(price.textContent) - factPrice + "грн"
+        amount--
+        goods.innerHTML = amount;
+    }else{
+        list.removeChild(line.parentNode);
+        boughtPizzas.splice(boughtPizzas.indexOf(name), 1);
+    }
+    document.querySelector('.shoppingСart').innerHTML = boughtPizzas.length
+}
+
+
+//видалення піци
+function removePizza(){
+    var list = document.querySelector('.list');
+    var line = this.closest('.line');
+    var name = line.querySelector('h4').textContent;
+
+    var price = line.querySelector('.price');
+    var factPrice = parseInt(price.textContent);
+
+    var conclusion = document.querySelector('.totalPrice');
+    var pay = parseInt(conclusion.textContent)
+
+    conclusion.innerHTML = (pay - factPrice) + " грн"
+    list.removeChild(line.parentNode);
+    boughtPizzas.splice(boughtPizzas.indexOf(name), 1);
+    document.querySelector('.shoppingСart').innerHTML = boughtPizzas.length
+}
+
+addEventListener();

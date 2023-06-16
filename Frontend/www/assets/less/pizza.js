@@ -1,3 +1,4 @@
+
 //масив з купленими піцами
 var h4Elements = document.querySelectorAll('.list .mainLine h4');
 var boughtPizzas = Array.from(h4Elements).map(function(h4Element) {
@@ -6,6 +7,13 @@ var boughtPizzas = Array.from(h4Elements).map(function(h4Element) {
 document.querySelector('.shoppingСart').innerHTML = boughtPizzas.length
 
 function addEventListener(){
+
+var buyElement = document.querySelector('.list');
+var buyData = {
+  innerHTML: buyElement.innerHTML,
+};
+localStorage.setItem('pizza', JSON.stringify(buyData));
+
 var removeButton = document.querySelectorAll('.canRemove');
 removeButton.forEach(function(removeButton) {
     removeButton.removeEventListener('click', decreaseAmount);
@@ -41,8 +49,79 @@ deletePizza.forEach(function(deletePizza) {
     deletePizza.removeEventListener('click', removePizza);
     deletePizza.addEventListener('click', removePizza);
 });
-
 }
+
+//фільтри
+var typesSpan = document.querySelector('.types');
+typesSpan.addEventListener('click', function(event) {
+
+  var types = typesSpan.querySelectorAll('p');
+  types.forEach(function(f){
+       f.classList.remove('active')
+   });
+
+  var target = event.target;
+  var all = document.querySelectorAll('.col-sm-6');
+
+
+  if (target.classList.contains('allTypes')) {
+    all.forEach(function(element) {
+        element.style.display = 'inline-block';
+        target.classList.add('active')
+    });
+
+  } else if (target.classList.contains('meatType')) {
+    all.forEach(function(element) {
+        if(!element.classList.contains('meat')){
+        element.style.display = 'none';
+        target.classList.add('active')
+        }else{
+            element.style.display = 'inline-block';
+        }
+    });
+
+  } else if (target.classList.contains('pineaplesType')) {
+    all.forEach(function(element) {
+        if(!element.classList.contains('pineaples')){
+        element.style.display = 'none';
+        target.classList.add('active')
+        }else{
+            element.style.display = 'inline-block';
+        }
+    });
+
+  } else if (target.classList.contains('mushroomsType')) {
+    all.forEach(function(element) {
+        if(!element.classList.contains('mushrooms')){
+        element.style.display = 'none';
+        target.classList.add('active')
+        }else{
+            element.style.display = 'inline-block';
+        }
+    });
+
+  } else if (target.classList.contains('seafoodType')) {
+    all.forEach(function(element) {
+        if(!element.classList.contains('seafood')){
+        element.style.display = 'none';
+        target.classList.add('active')
+        }else{
+            element.style.display = 'inline-block';
+        }
+    });
+
+  } else if (target.classList.contains('vegaType')) {
+    all.forEach(function(element) {
+        if(!element.classList.contains('vega')){
+        element.style.display = 'none';
+        target.classList.add('active');
+        }else{
+            element.style.display = 'inline-block';
+        }
+    });
+  }
+});
+
 
 //купити малу піцу
 function buySmallPizza(){
@@ -104,8 +183,8 @@ function buySmallPizza(){
           }
         }
     }
-
     addEventListener();
+    
 }
 
 //купити велику піцу
@@ -168,6 +247,7 @@ function buyBigPizza(){
           }
         }
     }
+    window.localStorage.setItem('pizzas', document.querySelectorAll('.mainLine'));
     addEventListener();
 }
 

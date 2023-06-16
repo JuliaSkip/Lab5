@@ -1,4 +1,3 @@
-
 //масив з купленими піцами
 var h4Elements = document.querySelectorAll('.list .mainLine h4');
 var boughtPizzas = Array.from(h4Elements).map(function(h4Element) {
@@ -6,13 +5,35 @@ var boughtPizzas = Array.from(h4Elements).map(function(h4Element) {
 });
 document.querySelector('.shoppingСart').innerHTML = boughtPizzas.length
 
-function addEventListener(){
+var boughtPizzas = [];
 
-var buyElement = document.querySelector('.list');
-var buyData = {
-  innerHTML: buyElement.innerHTML,
-};
-localStorage.setItem('pizza', JSON.stringify(buyData));
+function updateLocalStorage() {
+    var buyElement = document.querySelector('.buy');
+    var buyData = {
+      innerHTML: buyElement.innerHTML,
+    };
+    localStorage.setItem('pizza', JSON.stringify(buyData));
+
+    localStorage.setItem('boughtPizzas', JSON.stringify(boughtPizzas));
+}
+
+function loadBoughtPizzasFromLocalStorage() {
+    var buyList = JSON.parse(localStorage.getItem('pizza'));
+    var firstPart = document.querySelector('.buy');
+    firstPart.innerHTML="";
+    var newElement = document.createElement('div');
+    newElement.innerHTML = buyList.innerHTML;
+    firstPart.appendChild(newElement);
+
+    var storedPizzas = localStorage.getItem('boughtPizzas');
+    if (storedPizzas) {
+    boughtPizzas = JSON.parse(storedPizzas);
+    document.querySelector('.shoppingСart').innerHTML = boughtPizzas.length;
+  }
+}
+
+
+function addEventListener(){
 
 var removeButton = document.querySelectorAll('.canRemove');
 removeButton.forEach(function(removeButton) {
@@ -183,6 +204,7 @@ function buySmallPizza(){
           }
         }
     }
+    updateLocalStorage();
     addEventListener();
     
 }
@@ -247,7 +269,7 @@ function buyBigPizza(){
           }
         }
     }
-    window.localStorage.setItem('pizzas', document.querySelectorAll('.mainLine'));
+    updateLocalStorage();
     addEventListener();
 }
 
@@ -263,6 +285,8 @@ function clearTheOrder(){
     <h4><b class="totalPrice">0 грн</b></h4>
     </div>
     <a href="#" class="orderButton"><h3>Замовити</h3></a>`;
+    updateLocalStorage();
+    addEventListener();
 }
 
 // збільшення кількості піци
@@ -281,6 +305,8 @@ function increaseAmount(){
     conclusion.innerHTML = (pay + factPrice) + " грн"
     amount++
     goods.innerHTML = amount;
+    updateLocalStorage();
+    addEventListener();
 }
 
 //зменшення кількості піци
@@ -307,6 +333,8 @@ function decreaseAmount(){
         boughtPizzas.splice(boughtPizzas.indexOf(name), 1);
     }
     document.querySelector('.shoppingСart').innerHTML = boughtPizzas.length
+    updateLocalStorage();
+    addEventListener();
 }
 
 
@@ -326,6 +354,9 @@ function removePizza(){
     list.removeChild(line.parentNode);
     boughtPizzas.splice(boughtPizzas.indexOf(name), 1);
     document.querySelector('.shoppingСart').innerHTML = boughtPizzas.length
+    updateLocalStorage();
+    addEventListener();
 }
 
+loadBoughtPizzasFromLocalStorage();
 addEventListener();

@@ -2,10 +2,12 @@
 
 //весь екран
 @import "pizza/pizza-card";
+body{
+    background-color: rgb(252, 244, 234);
+}
 .page{
     display: flex;
 }
-  
 .row .images{
     position: relative;
     width: 90%;
@@ -190,13 +192,13 @@
 //частинка з листом покупок
 .buy{
     width: 20%;
-    border: 1px solid black;
     position: fixed;
     top: 0; right: 0;
     height: 100vh;
     background-color: rgb(238, 233, 233);      
     overflow-y: scroll;
     overflow-x: hidden;
+    box-shadow: -4px 0 6px rgba(0, 0, 0, 0.2);
 }
 //заголовок
 .headline {
@@ -239,7 +241,7 @@
     border-bottom: 2px solid rgb(196, 196, 196);
     padding-top: 5px;
     position: relative;
-    top: 70px;
+    top: 80px;
 }
 .mainLine h4{
     color: @mainColor;
@@ -279,6 +281,7 @@
     width: 25px;
     text-align: center;
     border: 0.2rem solid rgb(206, 47, 47);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 }
 .addGoods {
     background-color: rgb(54, 201, 0);
@@ -292,6 +295,7 @@
     width: 25px;
     text-align: center;
     border: 0.2rem solid rgb(37, 163, 39);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 }
 .cross {
     display: flex;
@@ -303,6 +307,7 @@
     background-color: rgb(250, 250, 250);
     border: 0.2rem solid rgb(184, 184, 184);
     color: @mainColor;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 }
 .cross h3 {
     margin: 0;
@@ -554,8 +559,58 @@
         flex-direction: column;
     }
 }
-
 @media (max-width: 530px) {
+    .container {
+        width: 45%;
+	}
+	.buy{
+        width: 55%;
+	}
+    .headline {
+        width: 55%;
+    }
+    .headline h4{
+        position: relative;
+        font-size:medium;
+    }
+    .buyButton{
+        padding: 5%;
+    }
+    .ingredients{
+        height: 150px;
+    }
+    .information{
+        width: 45%;
+    }
+    .topText{
+        width: 30%;
+    }
+    .button{
+        position: fixed;
+        left: 26%;
+        top:42.5px;
+    }
+    .line h4{
+        position: relative;
+        left: -5px;
+        font-size:medium;
+    }
+    .bottomText{
+        display: none;
+    }
+    .conclusion{
+        width: 55%;
+    }
+    .orderButton {
+        width: 51%;
+    }
+    .types{
+        width: 90%;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 450px) {
     .page{
         flex-direction: column;
         min-width: 350px;

@@ -182,40 +182,77 @@ const filename = 'data.json';
 downloadJSON(jsonData, filename);*/
 
 //масив з купленими піцами
-var h4Elements = document.querySelectorAll('.list .mainLine h4');
-var boughtPizzas = Array.from(h4Elements).map(function(h4Element) {
-  return h4Element.textContent.trim();
-});
-document.querySelector('.shoppingСart').innerHTML = boughtPizzas.length
-
+var boughtPizzasNames = [];
 var boughtPizzas = [];
+document.querySelector('.shoppingСart').innerHTML = boughtPizzasNames.length
 
+//записую дані 
 function updateLocalStorage() {
-    var buyElement = document.querySelector('.buy');
-    var buyData = {
-      innerHTML: buyElement.innerHTML,
-    };
+    var buyData = [];
+    var buyElement = document.querySelectorAll('.buy .line');
+    var conclusion = document.querySelector('.totalPrice').textContent;
+
+    for(var i=0; i<buyElement.length; i++){
+        var name = buyElement[i].querySelector('h4').textContent;
+        var size = buyElement[i].querySelector('.boughtSize').textContent;
+        var weight = buyElement[i].querySelector('.boughtWeight').textContent;
+        var amount = buyElement[i].querySelector('.goods').textContent;
+        var price = buyElement[i].querySelector('.price').textContent;
+        var photo = buyElement[i].querySelector('.smallImages').getAttribute('src');
+
+        buyData.push({
+            name: name,
+            size: size,
+            weight: weight,
+            amount: amount,
+            price:price,
+            photo:photo,
+        });
+    }
     localStorage.setItem('pizza', JSON.stringify(buyData));
-
-    localStorage.setItem('boughtPizzas', JSON.stringify(boughtPizzas));
+    localStorage.setItem('boughtPizzas', JSON.stringify(boughtPizzasNames));
+    localStorage.setItem('totalPrice', conclusion);
 }
 
+//оновлення сторінки
 function loadBoughtPizzasFromLocalStorage() {
-    var buyList = JSON.parse(localStorage.getItem('pizza'));
-    var firstPart = document.querySelector('.buy');
-    firstPart.innerHTML="";
-    var newElement = document.createElement('div');
-    newElement.innerHTML = buyList.innerHTML;
-    firstPart.appendChild(newElement);
 
-    var storedPizzas = localStorage.getItem('boughtPizzas');
-    if (storedPizzas) {
-    boughtPizzas = JSON.parse(storedPizzas);
-    document.querySelector('.shoppingСart').innerHTML = boughtPizzas.length;
-  }
+    var pizzaData = JSON.parse(localStorage.getItem('pizza'));
+    
+    for(var i=0; i<pizzaData.length; i++){
+        var newLine = document.createElement("div");
+        newLine.classList.add("mainLine");
+        newLine.innerHTML = 
+          `<section class="line">
+    
+          <h4>${pizzaData[i].name}</h4>
+    
+          <div class="buyIcons">
+              <p class="boughtSize"> <img src="assets/images/size-icon.svg" alt="Size Icon"> ${pizzaData[i].size} </p>
+              <p class="boughtWeight"> <img src="assets/images/weight.svg" alt="Size Icon"> ${pizzaData[i].weight} </p>
+          </div>
+    
+          <div class="block"> 
+              <b class="price">${pizzaData[i].price}</b>
+              <span class="canRemove"><b>–</b></span>
+              <span class="goods">${pizzaData[i].amount}</span>
+              <span class="addGoods"><b>+</b></span>
+              <span class="cross"><h3><b>⨯</b></h3></span>
+          </div>
+    
+          <img src="${pizzaData[i].photo}" class="smallImages">
+    
+          </section>`;
+        var firstPart = document.querySelector('.list');
+        firstPart.appendChild(newLine);
+        boughtPizzasNames.push(pizzaData[i].name);
+
+        document.querySelector('.shoppingСart').innerHTML = boughtPizzasNames.length
+        document.querySelector('.totalPrice').innerHTML = localStorage.getItem('totalPrice')
+    } 
 }
 
-
+// додаю
 function addEventListener(){
 
 var removeButton = document.querySelectorAll('.canRemove');
@@ -340,7 +377,7 @@ function buySmallPizza(){
     var smallPrice = pizzaCard.querySelector('.smallPrice').textContent;
     var smallWeight = pizzaCard.querySelector('.smallWeight').textContent;
 
-    if(!boughtPizzas.includes(name+" (Мала)")){
+    if(!boughtPizzasNames.includes(name+" (Мала)")){
     var newLine = document.createElement("div");
     newLine.classList.add("mainLine");
     newLine.innerHTML = 
@@ -349,8 +386,8 @@ function buySmallPizza(){
       <h4>${name} (Мала)</h4>
 
       <div class="buyIcons">
-          <p> <img src="assets/images/size-icon.svg" alt="Size Icon"> 30 </p>
-          <p> <img src="assets/images/weight.svg" alt="Size Icon"> ${smallWeight} </p>
+          <p class="boughtSize"> <img src="assets/images/size-icon.svg" alt="Size Icon"> 30 </p>
+          <p class="boughtWeight"> <img src="assets/images/weight.svg" alt="Size Icon"> ${smallWeight} </p>
       </div>
 
       <div class="block"> 
@@ -367,8 +404,8 @@ function buySmallPizza(){
 
     var firstPart = document.querySelector('.list');
     firstPart.appendChild(newLine);
-    boughtPizzas.push(name+" (Мала)");
-    document.querySelector('.shoppingСart').innerHTML = boughtPizzas.length
+    boughtPizzasNames.push(name+" (Мала)");
+    document.querySelector('.shoppingСart').innerHTML = boughtPizzasNames.length
     conclusion.innerHTML = (pay + parseInt(smallPrice))+" грн";
     }else{
         var lines = document.querySelectorAll('.line h4');
@@ -405,7 +442,7 @@ function buyBigPizza(){
     var bigPrice = pizzaCard.querySelector('.bigPrice').textContent;
     var bigWeight = pizzaCard.querySelector('.bigWeight').textContent;
 
-    if(!boughtPizzas.includes(name+" (Велика)")){
+    if(!boughtPizzasNames.includes(name+" (Велика)")){
     var newLine = document.createElement("div");
     newLine.classList.add("mainLine");
     newLine.innerHTML = 
@@ -414,8 +451,8 @@ function buyBigPizza(){
       <h4>${name} (Велика)</h4>
 
       <div class="buyIcons">
-          <p> <img src="assets/images/size-icon.svg" alt="Size Icon"> 40 </p>
-          <p> <img src="assets/images/weight.svg" alt="Size Icon"> ${bigWeight} </p>
+          <p class="boughtSize"> <img src="assets/images/size-icon.svg" alt="Size Icon"> 40 </p>
+          <p class="boughtWeight"> <img src="assets/images/weight.svg" alt="Size Icon"> ${bigWeight} </p>
       </div>
 
       <div class="block"> 
@@ -432,8 +469,8 @@ function buyBigPizza(){
 
     var firstPart = document.querySelector('.list');
     firstPart.appendChild(newLine);
-    boughtPizzas.push(name+" (Велика)");
-    document.querySelector('.shoppingСart').innerHTML = boughtPizzas.length
+    boughtPizzasNames.push(name+" (Велика)");
+    document.querySelector('.shoppingСart').innerHTML = boughtPizzasNames.length
     conclusion.innerHTML = (pay + parseInt(bigPrice))+" грн";
     }else{
         var lines = document.querySelectorAll('.line h4');
@@ -460,14 +497,10 @@ function buyBigPizza(){
 //очищення кошика
 function clearTheOrder(){
     var list = document.querySelector('.list');
-    boughtPizzas.splice(0, boughtPizzas.length);
-    document.querySelector('.shoppingСart').innerHTML = boughtPizzas.length
-    list.innerHTML = 
-    `<div class="conclusion">
-    <h5><b>Сума замовлення</b></h5>
-    <h4><b class="totalPrice">0 грн</b></h4>
-    </div>
-    <a href="#" class="orderButton"><h3>Замовити</h3></a>`;
+    boughtPizzasNames.splice(0, boughtPizzasNames.length);
+    document.querySelector('.shoppingСart').innerHTML = boughtPizzasNames.length
+    list.innerHTML = "";
+    document.querySelector('.totalPrice').textContent = "0 грн"
     updateLocalStorage();
     addEventListener();
 }
@@ -513,9 +546,9 @@ function decreaseAmount(){
         goods.innerHTML = amount;
     }else{
         list.removeChild(line.parentNode);
-        boughtPizzas.splice(boughtPizzas.indexOf(name), 1);
+        boughtPizzasNames.splice(boughtPizzasNames.indexOf(name), 1);
     }
-    document.querySelector('.shoppingСart').innerHTML = boughtPizzas.length
+    document.querySelector('.shoppingСart').innerHTML = boughtPizzasNames.length
     updateLocalStorage();
     addEventListener();
 }
@@ -535,8 +568,8 @@ function removePizza(){
 
     conclusion.innerHTML = (pay - factPrice) + " грн"
     list.removeChild(line.parentNode);
-    boughtPizzas.splice(boughtPizzas.indexOf(name), 1);
-    document.querySelector('.shoppingСart').innerHTML = boughtPizzas.length
+    boughtPizzasNames.splice(boughtPizzasNames.indexOf(name), 1);
+    document.querySelector('.shoppingСart').innerHTML = boughtPizzasNames.length
     updateLocalStorage();
     addEventListener();
 }

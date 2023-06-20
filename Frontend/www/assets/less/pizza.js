@@ -1,185 +1,106 @@
-//метод запису у файл
-function downloadJSON(data, filename) {
-    const jsonContent = JSON.stringify(data, null, 2);
-    const blob = new Blob([jsonContent], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    a.click();
-    
-    URL.revokeObjectURL(url);
+//додаю піцу з документа
+document.addEventListener('DOMContentLoaded', function () {
+    fetch('assets/less/data.json')
+      .then(response => response.json())
+      .then(data => {
+        const pizzas = data.pizzas;
+  
+        for (var i = 0; i < pizzas.length; i++) {
+          var newLine = createPizzaCard(pizzas[i]);
+  
+          if (newLine.classList.contains('popular')) {
+               newLine.setAttribute('data-tooltip', 'Популярна');
+            } else if (newLine.classList.contains('new')) {
+               newLine.setAttribute('data-tooltip', 'Нова');
+            }
+
+          if(pizzas[i].small_size){
+             var buySmallButton = newLine.querySelector('.buyS');
+             buySmallButton.removeEventListener('click', buySmallPizza);
+             buySmallButton.addEventListener('click', buySmallPizza);
+            }
+
+          if(pizzas[i].big_size){
+             var buyBigButton = newLine.querySelector('.buyB');
+             buyBigButton.removeEventListener('click', buyBigPizza);
+             buyBigButton.addEventListener('click', buyBigPizza);
+            }
+
+          var firstPart = document.querySelector('.row');
+          firstPart.appendChild(newLine);
+        }
+    });
+});
+  
+//створюю поле з піцою
+function createPizzaCard(pizza) {
+    var newLine = document.createElement('div');
+    newLine.classList = pizza.classes;
+  
+    var innerHTML = `
+      <div class="thumbnail pizza-card">
+        <img src="${pizza.icon}" class="images">
+        <div class="caption">
+          <h3>${pizza.title}</h3>
+          <h5 class="description">${pizza.type}</h5>
+          <p class="ingredients">${pizza.content}</p>
+          ${createIconsSection(pizza)}
+        </div>
+      </div>
+    `;
+    newLine.innerHTML = innerHTML;
+    return newLine;
 }
 
-// дані
-const jsonData = [
-    {
-        icon:'assets/images/pizza_7.jpg',
-        title: "Імпреза",
-        type: 'М’ясна піца',
-        content: {
-            meat: ['балик', 'салямі'],
-            chicken: ['курка'],
-            cheese: ['сир моцарелла', 'сир рокфорд'],
-            pineapple: ['ананаси'],
-            additional: ['томатна паста', 'петрушка']
-        },
-        small_size:{
-            weight: 370,
-            size: 30,
-            price: 99
-        },
-        big_size:{
-            weight: 660,
-            size: 40,
-            price: 169
-        },
-        is_new:true,
-        is_popular:true
-
-    },
-    {
-        icon:'assets/images/pizza_2.jpg',
-        title: "BBQ",
-        type: 'М’ясна піца',
-        content: {
-            meat: ['мисливські ковбаски', 'ковбаски папероні', 'шинка'],
-            cheese: ['сир домашній'],
-            mushroom: ['шампінйони'],
-            additional: ['петрушка', 'оливки']
-        },
-        small_size:{
-            weight: 460,
-            size: 30,
-            price: 139
-        },
-        big_size:{
-            weight: 840,
-            size: 40,
-            price: 199
-        },
-        is_popular:true
-    },
-    {
-        icon:'assets/images/pizza_1.jpg',
-        title: "Міксовий поло",
-        type: 'М’ясна піца',
-        content: {
-            meat: ['шинка', 'курка копчена'],
-            cheese: ['сир моцарелла'],
-            pineapple: ['ананаси'],
-            additional: ['кукурудза', 'петрушка', 'соус томатний']
-        },
-        small_size:{
-            weight: 430,
-            size: 30,
-            price: 115
-        },
-        big_size:{
-            weight: 780,
-            size: 40,
-            price: 179
-        }
-    },
-    {
-        icon:'assets/images/pizza_5.jpg',
-        title: "Сициліано",
-        type: 'М’ясна піца',
-        content: {
-            meat: ['шинка', 'салямі'],
-            cheese: ['сир моцарелла'],
-            mushroom: ['шампінйони'],
-            additional: ['перець болгарський',  'соус томатний']
-        },
-        small_size:{
-            weight: 450,
-            size: 30,
-            price: 111
-        },
-        big_size:{
-            weight: 790,
-            size: 40,
-            price: 169
-        }
-    },
-    {
-        icon:'assets/images/pizza_3.jpg',
-        title: "Маргарита",
-        type: 'Вега піца',
-        content: {
-            cheese: ['сир моцарелла', 'сир домашній'],
-            tomato: ['помідори'],
-            additional: ['базилік', 'оливкова олія', 'соус томатний']
-        },
-        small_size:{
-            weight: 370,
-            size: 30,
-            price: 89
-        }
-    },
-    {
-        icon:'assets/images/pizza_6.jpg',
-        title: "Мікс смаків",
-        type: 'М’ясна піца',
-        content: {
-            meat: ['ковбаски'],
-            cheese: ['сир моцарелла'],
-            mushroom: ['шампінйони'],
-            pineapple: ['ананаси'],
-            additional: ['цибуля кримська', 'огірки квашені', 'соус гірчичний']
-        },
-        small_size:{
-            weight: 470,
-            size: 30,
-            price: 115
-        },
-        big_size:{
-            weight: 780,
-            size: 40,
-            price: 180
-        }
-    },
-    {
-        icon:'assets/images/pizza_8.jpg',
-        title: "Дольче Маре",
-        type: 'Морська піца',
-        content: {
-            ocean: ['криветки тигрові', 'мідії', 'ікра червона', 'філе червоної риби'],
-            cheese: ['сир моцарелла'],
-            additional: ['оливкова олія', 'вершки']
-        },
-        big_size:{
-            weight: 845,
-            size: 40,
-            price: 399
-        }
-    },
-    {
-        icon:'assets/images/pizza_4.jpg',
-        title: "Россо Густо",
-        type: 'Морська піца',
-        content: {
-            ocean: ['ікра червона', 'лосось копчений'],
-            cheese: ['сир моцарелла'],
-            additional: ['оливкова олія', 'вершки']
-        },
-        small_size:{
-            weight: 400,
-            size: 30,
-            price: 189
-        },
-        big_size:{
-            weight: 700,
-            size: 40,
-            price: 299
-        }
+//додаю іконки
+function createIconsSection(pizza) {
+    if (pizza.small_size && pizza.big_size) {
+      return `
+        <div class="icons">
+          <p><img src="assets/images/size-icon.svg" alt="Size Icon"> 30</p>
+          <p><img src="assets/images/size-icon.svg" alt="Size Icon"> 40</p>
+          <p class="smallWeight"><img src="assets/images/weight.svg" alt="Size Icon"> ${pizza.small_size.weight}</p>
+          <p class="bigWeight"><img src="assets/images/weight.svg" alt="Size Icon"> ${pizza.big_size.weight}</p>
+          <section>
+            <h1 class="smallPrice"><b>${pizza.small_size.price}</b></h1>
+            <h4><b>грн.</b></h4>
+            <button class="buyS buyButton">Купити</button>
+          </section>
+          <section>
+            <h1 class="bigPrice"><b>${pizza.big_size.price}</b></h1>
+            <h4><b>грн.</b></h4>
+            <button class="buyB buyButton">Купити</button>
+          </section>
+        </div>
+      `;
+    } else if (pizza.big_size) {
+      return `
+        <div class="oneRowIcons">
+          <p><img src="assets/images/size-icon.svg" alt="Size Icon"> 40</p>
+          <p class="bigWeight"><img src="assets/images/weight.svg" alt="Size Icon"> ${pizza.big_size.weight}</p>
+          <section>
+            <h1 class="bigPrice"><b>${pizza.big_size.price}</b></h1>
+            <h4><b>грн.</b></h4>
+            <button class="buyB buyButton">Купити</button>
+          </section>
+        </div>
+      `;
+    } else if (pizza.small_size) {
+      return `
+        <div class="oneRowIcons">
+          <p><img src="assets/images/size-icon.svg" alt="Size Icon"> 30</p>
+          <p class="smallWeight"><img src="assets/images/weight.svg" alt="Size Icon"> ${pizza.small_size.weight}</p>
+          <section>
+            <h1 class="smallPrice"><b>${pizza.small_size.price}</b></h1>
+            <h4><b>грн.</b></h4>
+            <button class="buyS buyButton">Купити</button>
+          </section>
+        </div>
+      `;
+    } else {
+      return '';
     }
-];
-
-/*запис у файл
-const filename = 'data.json';
-downloadJSON(jsonData, filename);*/
+}
 
 //масив з купленими піцами
 var boughtPizzasNames = [];
@@ -573,6 +494,5 @@ function removePizza(){
     updateLocalStorage();
     addEventListener();
 }
-
 loadBoughtPizzasFromLocalStorage();
 addEventListener();

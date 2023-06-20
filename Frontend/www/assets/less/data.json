@@ -5,7 +5,13 @@
     "title": "Імпреза",
     "type": "М’ясна піца",
     "classes":"col-sm-6 col-md-4 new meat pineaples",
-    "content":"Балик, салямі, курка, сир моцарелла, сир рокфорд, ананаси, томатна паста, петрушка",
+    "content":{
+      "meat":["Балик","салямі"],
+      "chicken":["курка"],
+      "cheese":["сир моцарелла","сир рокфорд"],
+      "pineapple":["ананаси"],
+      "additional":["томатна паста","петрушка"]
+    },
     "small_size": {
       "weight": 370,
       "size": 30,
@@ -22,7 +28,12 @@
     "title": "BBQ",
     "type": "М’ясна піца",
     "classes":"col-sm-6 col-md-4 popular meat mushrooms",
-    "content":"Мисливські ковбаски, ковбаски папероні, шинка, сир домашній, шампінйони, петрушка, оливки",
+    "content":{
+      "meat":["Мисливські ковбаски","ковбаски папероні","шинка"],
+      "cheese":["сир домашній"],
+      "mushroom":["шампінйони"],
+      "additional":["петрушка","оливки"]
+    },
     "small_size": {
       "weight": 460,
       "size": 30,
@@ -39,7 +50,12 @@
     "title": "Міксовий поло",
     "type": "М’ясна піца",
     "classes":"col-sm-6 col-md-4 meat pineaples",
-    "content":"шинка, курка копчена, сир моцарелла, ананаси, кукурудза, петрушка, соус томатний",
+    "content":{
+      "meat":["Шинка","курка копчена"],
+      "cheese":["сир моцарелла"],
+      "pineapple":["ананаси"],
+      "additional":["кукурудза","петрушка","соус томатний"]
+    },
     "small_size": {
       "weight": 430,
       "size": 30,
@@ -56,7 +72,12 @@
     "title": "Сициліано",
     "type": "М’ясна піца",
     "classes":"col-sm-6 col-md-4 meat mushrooms",
-    "content":"Шинка, салямі, сир моцарелла, шампінйони, перець болгарський, соус томатний",
+    "content":{
+      "meat":["Шинка","салямі"],
+      "cheese":["сир моцарелла"],
+      "mushroom":["шампінйони"],
+      "additional":["перець болгарський","соус томатний"]
+    },
     "small_size": {
       "weight": 450,
       "size": 30,
@@ -69,11 +90,33 @@
     }
   },
   {
+    "icon": "assets/images/pizza_3.jpg",
+    "title": "Маргарита",
+    "type": "Вега піца",
+    "classes":"col-sm-6 col-md-4 vega",
+    "content": {
+      "cheese":["Сир моцарелла","сир домашній"],
+      "tomato":["помідори"],
+      "additional":["базилік","оливкова олія","соус томатний"]
+    },
+    "small_size": {
+      "weight": 370,
+      "size": 30,
+      "price": 89
+    }
+  },
+  {
     "icon": "assets/images/pizza_6.jpg",
     "title": "Мікс смаків",
     "type": "М’ясна піца",
     "classes":"col-sm-6 col-md-4 meat mushrooms pineaples",
-    "content": "Ковбаски, сир моцарелла, шампінйони, ананаси, цибуля кримська, огірки квашені, соус гірчичний",
+    "content": {
+      "meat":["Ковбаски"],
+      "cheese":["сир моцарелла"],
+      "mushroom":["шампінйони"],
+      "pineapple":["ананаси"],
+      "additional":["цибуля кримська","огірки квашені","соус гірчичний"]
+    },
     "small_size": {
       "weight": 470,
       "size": 30,
@@ -86,11 +129,31 @@
     }
   },
   {
+    "icon": "assets/images/pizza_8.jpg",
+    "title": "Дольче Маре",
+    "type": "Морська піца",
+    "classes":"col-sm-6 col-md-4 seafood",
+    "content":{
+      "ocean":["Криветки тигрові","мідії","ікра червона","філе червоної риби"],
+      "cheese":["сир моцарелла"],
+      "additional":["оливкова олія","вершки"]
+    },
+    "big_size": {
+      "weight": 845,
+      "size": 40,
+      "price": 399
+    }
+  },
+  {
     "icon": "assets/images/pizza_4.jpg",
     "title": "Россо Густо",
     "type": "Морська піца",
     "classes":"col-sm-6 col-md-4 seafood",
-    "content":"Ікра червона, лосось копчений, сир моцарелла, оливкова олія, вершки",
+    "content":{
+      "ocean":["Ікра червона","лосось копчений"],
+      "cheese":["сир моцарелла"],
+      "additional":["оливкова олія","вершки"]
+    },
     "small_size": {
       "weight": 400,
       "size": 30,
@@ -100,30 +163,6 @@
       "weight": 700,
       "size": 40,
       "price": 299
-    }
-  },
-  {
-    "icon": "assets/images/pizza_8.jpg",
-    "title": "Дольче Маре",
-    "type": "Морська піца",
-    "classes":"col-sm-6 col-md-4 seafood",
-    "content":"Криветки тигрові, мідії, ікра червона, філе червоної риби, сир моцарелла, оливкова олія, вершки",
-    "big_size": {
-      "weight": 845,
-      "size": 40,
-      "price": 399
-    }
-  },
-  {
-    "icon": "assets/images/pizza_3.jpg",
-    "title": "Маргарита",
-    "type": "Вега піца",
-    "classes":"col-sm-6 col-md-4 vega",
-    "content": "Сир моцарелла, сир домашній, помідори, базилік, оливкова олія, соус томатний",
-    "small_size": {
-      "weight": 370,
-      "size": 30,
-      "price": 89
     }
   }
 ]

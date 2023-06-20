@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function createPizzaCard(pizza) {
     var newLine = document.createElement('div');
     newLine.classList = pizza.classes;
+    var ingredients = Object.values(pizza.content).flat().join(', ');
   
     var innerHTML = `
       <div class="thumbnail pizza-card">
@@ -43,7 +44,7 @@ function createPizzaCard(pizza) {
         <div class="caption">
           <h3>${pizza.title}</h3>
           <h5 class="description">${pizza.type}</h5>
-          <p class="ingredients">${pizza.content}</p>
+          <p class="ingredients">${ingredients}</p>
           ${createIconsSection(pizza)}
         </div>
       </div>
